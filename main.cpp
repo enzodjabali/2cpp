@@ -250,7 +250,7 @@ int displayMainMenu() {
     // ask for action : execute a task / create a task / delete a task / duplicate a task / schedule a task / /!\ TASK MOVEMENT PREVIEW
     std::cout << "Available actions:\n";
 
-    std::vector<string> availableActions = {"Execute a task", "Create a task", "Delete a task", "Rename a task", "Duplicate a task", "Schedule a task"};
+    std::vector<string> availableActions = {"Execute a task", "Create a task", "Delete a task", "Rename a task", "Duplicate a task", "Schedule a task",  "Simulate a task's path as a preview"};
 
     for (int i = 0; i < availableActions.size(); i++) {
         std::cout << i+1 << ": " << availableActions.at(i) << '\n';
