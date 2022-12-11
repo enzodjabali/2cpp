@@ -112,8 +112,33 @@ int ReadFile() {
     std::vector<string> resultsFromFileVector;
     resultsFromFileVector = divideStringIntoArray(result, "|");
 
+    std::string infoTask;
+
+    std::vector<string> resultsInfoTask;
+
+    std::vector<string> listOfTasksNames;
+
     for (int i = 0; i < resultsFromFileVector.size(); i++) {
+
+        // here we have each task (we're printing it out below)
         std::cout << resultsFromFileVector.at(i) << '\n';
+        infoTask = resultsFromFileVector.at(i);
+
+        // now we want to split each data from the current task
+        resultsInfoTask = divideStringIntoArray(infoTask, ";");
+
+        for (int i = 0; i < resultsInfoTask.size(); i++) {
+            std::cout << resultsInfoTask.at(i) << '\n';
+
+        }
+
+        listOfTasksNames.push_back(resultsInfoTask.at(0));
+
+
+        for (int i = 0; i < listOfTasksNames.size(); i++) {
+            std::cout << listOfTasksNames.at(i) << '\n';
+        }
+
     }
 
 
@@ -121,8 +146,31 @@ int ReadFile() {
 }
 
 int displayMainMenu() {
+    std::cout << "Welcome to the SUPINFO auto clicker!\n";
 
     // display tasks
+
+    std::ifstream file("C:/Users/$4UR000-S8CC9UP2KJ2T/CLionProjects/2cpp/data.txt");
+    std::string str;
+    std::string result;
+
+    while (std::getline(file, str)) {
+        result = str;
+    }
+
+    std::vector<string> resultsFromFileVector;
+    resultsFromFileVector = divideStringIntoArray(result, "|");
+    std::string infoTask;
+    std::vector<string> resultsInfoTask;
+    std::vector<string> listOfTasksNames;
+
+    for (int i = 0; i < resultsFromFileVector.size(); i++) {
+        infoTask = resultsFromFileVector.at(i);
+        resultsInfoTask = divideStringIntoArray(infoTask, ";");
+        listOfTasksNames.push_back(resultsInfoTask.at(0));
+        std::cout << i << " : " << listOfTasksNames.at(i) << '\n';
+
+    }
 
     // ask for action : execute a task / create a task / delete a task / duplicate a task / schedule a task
 
@@ -131,7 +179,9 @@ int displayMainMenu() {
 
 
 int main(){
-    ReadFile();
+    displayMainMenu();
+
+    //ReadFile();
 
     //recordSchema();
 
