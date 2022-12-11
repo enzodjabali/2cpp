@@ -171,7 +171,19 @@ int displayAvailableTasks() {
 
     }
 
-    return 0;
+    std::cout << '\n';
+    int x;
+    std::cout << "Type a number: "; // Type a number and press enter
+    std::cin >> x; // Get user input from the keyboard
+    x = x-1;
+    std::cout << '\n';
+
+    return x;
+}
+
+int executeTask(int chosenTask) {
+    // the below code will execute the given task's number
+
 }
 
 int displayMainMenu() {
@@ -188,13 +200,16 @@ int displayMainMenu() {
     std::cout << '\n';
 
     int x;
-    cout << "Type a number: "; // Type a number and press enter
-    cin >> x; // Get user input from the keyboard
-    cout << '\n';
+    std::cout << "Type a number: "; // Type a number and press enter
+    std::cin >> x; // Get user input from the keyboard
+    std::cout << '\n';
+
+    int chosenTask;
 
     switch (x) {
         case 1:
-            displayAvailableTasks();
+            chosenTask = displayAvailableTasks();
+            executeTask(chosenTask);
             break;
         case 2:
             cout << "2";
