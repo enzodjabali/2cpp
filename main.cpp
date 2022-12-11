@@ -2,20 +2,29 @@
 #include <windows.h>
 #include <conio.h>
 #include <unistd.h>
-
 #include <fstream>
 #include <string>
 #include <vector>
-
 #include <sstream>
-
+#include <algorithm>
 
 using namespace std;
+
+const string DATA_FILE_PATH = "C:/Users/$4UR000-S8CC9UP2KJ2T/CLionProjects/2cpp/data.txt";
+POINT point;
 
 int keyPressed(int key){
     return (GetAsyncKeyState(key) & 0x8000 != 0);
 }
-POINT point;
+
+vector<int> convertVectorStringToVectorInt(vector<string> strings) {
+    std::vector<int> ints;
+    std::transform(strings.begin(), strings.end(), std::back_inserter(ints), [&](std::string s) {
+        return stoi(s);
+    });
+
+    return ints;
+}
 
 int recordSchema() {
 
@@ -134,13 +143,11 @@ int ReadFile() {
 
         listOfTasksNames.push_back(resultsInfoTask.at(0));
 
-
         for (int i = 0; i < listOfTasksNames.size(); i++) {
             std::cout << listOfTasksNames.at(i) << '\n';
         }
 
     }
-
 
     return 0;
 }
@@ -149,7 +156,7 @@ int displayAvailableTasks() {
     // display tasks
     std::cout << "Available tasks:\n";
 
-    std::ifstream file("C:/Users/$4UR000-S8CC9UP2KJ2T/CLionProjects/2cpp/data.txt");
+    std::ifstream file(DATA_FILE_PATH);
     std::string str;
     std::string result;
 
@@ -181,18 +188,69 @@ int displayAvailableTasks() {
     return x;
 }
 
+int makeClick(int key, int x, int y) {
+    // here we are making the click on the screen
+
+    SetCursorPos(x, y);
+    mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, x, y, 0, 0);
+
+    return 0;
+}
+
 int executeTask(int chosenTask) {
     // the below code will execute the given task's number
 
+    std::ifstream file(DATA_FILE_PATH);
+    std::string str;
+    std::string result;
+
+    while (std::getline(file, str)) {
+        result = str;
+    }
+
+    std::vector<string> resultsFromFileVector;
+    resultsFromFileVector = divideStringIntoArray(result, "|");
+    std::string infoTask;
+    std::vector<string> resultsInfoTask;
+
+    infoTask = resultsFromFileVector.at(chosenTask);
+    resultsInfoTask = divideStringIntoArray(infoTask, ";");
+
+    cout << infoTask;
+
+    std::cout << '\n';
+
+    std::vector<string> clicksInfos;
+    std::vector<int> clicksInfosInt;
+
+    for (int i = 0; i < resultsInfoTask.size(); i++) {
+        // here we get all elements from a task
+        // the first one will be the name of the task [0]
+        // the others will be the clicks' infos
+        std::cout << resultsInfoTask.at(i) << '\n';
+
+        if (i != 0) {
+            clicksInfos = divideStringIntoArray(resultsInfoTask.at(i), ",");
+            clicksInfosInt = convertVectorStringToVectorInt(clicksInfos);
+
+            // we have to make the click right now
+            makeClick(clicksInfosInt.at(0), clicksInfosInt.at(1), clicksInfosInt.at(2));
+
+            // the sleep value should be replaced by the real waiting time value stored in the data file
+            usleep(1000000);
+        }
+    }
+
+    return 0;
 }
 
 int displayMainMenu() {
     std::cout << "Welcome to the SUPINFO AutoClicker!\n\n";
 
-    // ask for action : execute a task / create a task / delete a task / duplicate a task / schedule a task
+    // ask for action : execute a task / create a task / delete a task / duplicate a task / schedule a task / /!\ TASK MOVEMENT PREVIEW
     std::cout << "Available actions:\n";
 
-    std::vector<string> availableActions = {"Execute a task", "Create a task", "Delete a task", "Rename a task", "Duplicate a task", "Schedule a task"};
+    std::vector<string> availableActions = {"Execute a task", "Create a task", "Delete a task", "Rename a task", "Duplicate a task", "Schedule a task",  "Simulate a task's path as a preview"};
 
     for (int i = 0; i < availableActions.size(); i++) {
         std::cout << i+1 << ": " << availableActions.at(i) << '\n';
@@ -233,6 +291,9 @@ int displayMainMenu() {
 
 
 int main(){
+    //std::vector<int> clicksInfosInt;
+    //clicksInfosInt = convertVectorStringToVectorInt({"1111", "21", "3", "411123"});
+
     displayMainMenu();
 
     //ReadFile();
