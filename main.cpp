@@ -145,10 +145,9 @@ int ReadFile() {
     return 0;
 }
 
-int displayMainMenu() {
-    std::cout << "Welcome to the SUPINFO auto clicker!\n";
-
+int displayAvailableTasks() {
     // display tasks
+    std::cout << "Available tasks:\n";
 
     std::ifstream file("C:/Users/$4UR000-S8CC9UP2KJ2T/CLionProjects/2cpp/data.txt");
     std::string str;
@@ -168,11 +167,66 @@ int displayMainMenu() {
         infoTask = resultsFromFileVector.at(i);
         resultsInfoTask = divideStringIntoArray(infoTask, ";");
         listOfTasksNames.push_back(resultsInfoTask.at(0));
-        std::cout << i << " : " << listOfTasksNames.at(i) << '\n';
+        std::cout << i+1 << ": " << listOfTasksNames.at(i) << '\n';
 
     }
 
+    std::cout << '\n';
+    int x;
+    std::cout << "Type a number: "; // Type a number and press enter
+    std::cin >> x; // Get user input from the keyboard
+    x = x-1;
+    std::cout << '\n';
+
+    return x;
+}
+
+int executeTask(int chosenTask) {
+    // the below code will execute the given task's number
+
+}
+
+int displayMainMenu() {
+    std::cout << "Welcome to the SUPINFO AutoClicker!\n\n";
+
     // ask for action : execute a task / create a task / delete a task / duplicate a task / schedule a task
+    std::cout << "Available actions:\n";
+
+    std::vector<string> availableActions = {"Execute a task", "Create a task", "Delete a task", "Rename a task", "Duplicate a task", "Schedule a task"};
+
+    for (int i = 0; i < availableActions.size(); i++) {
+        std::cout << i+1 << ": " << availableActions.at(i) << '\n';
+    }
+    std::cout << '\n';
+
+    int x;
+    std::cout << "Type a number: "; // Type a number and press enter
+    std::cin >> x; // Get user input from the keyboard
+    std::cout << '\n';
+
+    int chosenTask;
+
+    switch (x) {
+        case 1:
+            chosenTask = displayAvailableTasks();
+            executeTask(chosenTask);
+            break;
+        case 2:
+            cout << "2";
+            break;
+        case 3:
+            cout << "3";
+            break;
+        case 4:
+            cout << "4";
+            break;
+        case 5:
+            cout << "5";
+            break;
+        case 6:
+            cout << "6";
+            break;
+    }
 
     return 0;
 }
