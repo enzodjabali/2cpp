@@ -233,6 +233,29 @@ int renameTask(string deletedTask) {
     return 0;
 }
 
+int duplicateTask(int chosenTask) {
+    // we're duplicating a task here
+
+    filesystem::path pwd = filesystem::current_path();
+    pwd /= "..\\data.txt";
+
+    std::ifstream file(pwd);
+    std::string str;
+    std::string result;
+
+    while (std::getline(file, str)) {
+        result = str;
+    }
+
+    std::vector<string> resultsFromFileVector;
+    resultsFromFileVector = divideStringIntoArray(result, "|");
+
+    updateData("|", true);
+    updateData(resultsFromFileVector.at(chosenTask), true);
+
+    return 0;
+}
+
 
 int displayMainMenu() {
     std::cout << "Welcome to the SUPINFO AutoClicker!\n\n";
@@ -277,7 +300,9 @@ int displayMainMenu() {
             std::cout << "Done.\n";
             break;
         case 5:
-            cout << "5";
+            chosenTask = displayAvailableTasks();
+            duplicateTask(chosenTask);
+            std::cout << "Done.\n";
             break;
         case 6:
             cout << "6";
