@@ -7,8 +7,10 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <filesystem>
 
 #include "taskExecutor.cpp"
+
 
 using namespace std;
 
@@ -148,6 +150,45 @@ int displayAvailableTasks() {
 int deleteTask(int chosenTask) {
     // here we need to delete a task
 
+    filesystem::path pwd = filesystem::current_path();
+    pwd /= "..\\data.txt";
+
+    std::ifstream file(pwd);
+    std::string str;
+    std::string result;
+
+    while (std::getline(file, str)) {
+        result = str;
+    }
+
+    std::vector<string> resultsFromFileVector;
+    resultsFromFileVector = divideStringIntoArray(result, "|");
+    std::string infoTask;
+    std::vector<string> resultsInfoTask;
+
+    infoTask = resultsFromFileVector.at(chosenTask);
+
+    std::string newData;
+
+    for (int i = 0; i < resultsFromFileVector.size(); i++) {
+        if (i != chosenTask) {
+            newData += resultsFromFileVector.at(i);
+            newData += "|";
+        }
+    }
+
+    newData = newData.substr(0, newData.size()-1);
+    cout << newData << '\n';
+
+    // we're updating the data file
+    // Create and open a text file
+    ofstream MyFile(pwd);
+
+    // Write to the file
+    MyFile << newData;
+
+    // Close the file
+    MyFile.close();
 
     return 0;
 }
