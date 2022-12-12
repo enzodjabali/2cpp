@@ -192,7 +192,21 @@ int makeClick(int key, int x, int y) {
     // here we are making the click on the screen
 
     SetCursorPos(x, y);
-    mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, x, y, 0, 0);
+
+    switch (key) {
+        case 1:
+            mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, x, y, 0, 0);
+            cout << "Right click on x: " << x << " and y: " << y << "\n";
+            break;
+        case 2:
+            mouse_event(MOUSEEVENTF_MIDDLEDOWN | MOUSEEVENTF_MIDDLEUP, x, y, 0, 0);
+            cout << "Middle click on x: " << x << " and y: " << y << "\n";
+            break;
+        case 3:
+            mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, x, y, 0, 0);
+            cout << "Left click on x: " << x << " and y: " << y << "\n";
+            break;
+    }
 
     return 0;
 }
@@ -216,9 +230,9 @@ int executeTask(int chosenTask) {
     infoTask = resultsFromFileVector.at(chosenTask);
     resultsInfoTask = divideStringIntoArray(infoTask, ";");
 
-    cout << infoTask;
-
-    std::cout << '\n';
+    //cout << infoTask;
+    //std::cout << '\n';
+    std::cout << resultsInfoTask.at(0) << " is being executed...\n";
 
     std::vector<string> clicksInfos;
     std::vector<int> clicksInfosInt;
@@ -227,7 +241,8 @@ int executeTask(int chosenTask) {
         // here we get all elements from a task
         // the first one will be the name of the task [0]
         // the others will be the clicks' infos
-        std::cout << resultsInfoTask.at(i) << '\n';
+
+        //std::cout << resultsInfoTask.at(i) << '\n';
 
         if (i != 0) {
             clicksInfos = divideStringIntoArray(resultsInfoTask.at(i), ",");
@@ -236,10 +251,12 @@ int executeTask(int chosenTask) {
             // we have to make the click right now
             makeClick(clicksInfosInt.at(0), clicksInfosInt.at(1), clicksInfosInt.at(2));
 
-            // the sleep value should be replaced by the real waiting time value stored in the data file
-            usleep(1000000);
+            // the waiting time value stored in the data file in microseconds
+            usleep(clicksInfosInt.at(3));
         }
     }
+
+    std::cout << "Done.\n";
 
     return 0;
 }
