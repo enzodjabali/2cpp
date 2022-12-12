@@ -257,6 +257,23 @@ int duplicateTask(int chosenTask) {
 }
 
 
+int scheduleTask(int chosenTask) {
+    // we need to ask the user for how many seconds to wait before starting the chosen task
+
+    int waitingTimeInSeconds;
+    std::cout << "How many seconds will the program wait before launching the task: ";
+    std::cin >> waitingTimeInSeconds;
+    std::cout << '\n';
+    std::cout << "The program will wait " << waitingTimeInSeconds << "s before executing the task.\n";
+
+    int waitingTimeInMicroSeconds = waitingTimeInSeconds * 1000000;
+    usleep(waitingTimeInMicroSeconds);
+    executeTask(chosenTask, false);
+
+    return 0;
+}
+
+
 int displayMainMenu() {
     std::cout << "Welcome to the SUPINFO AutoClicker!\n\n";
 
@@ -305,7 +322,9 @@ int displayMainMenu() {
             std::cout << "Done.\n";
             break;
         case 6:
-            cout << "6";
+            chosenTask = displayAvailableTasks();
+            scheduleTask(chosenTask);
+            std::cout << "Done.\n";
             break;
         case 7:
             chosenTask = displayAvailableTasks();
