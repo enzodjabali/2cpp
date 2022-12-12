@@ -211,7 +211,28 @@ int makeClick(int key, int x, int y) {
     return 0;
 }
 
-int executeTask(int chosenTask) {
+int makePreviewClick(int key, int x, int y) {
+    // here we are making the click on the screen
+
+    SetCursorPos(x, y);
+
+    switch (key) {
+        case 1:
+            cout << "Right click on x: " << x << " and y: " << y << "\n";
+            break;
+        case 2:
+            cout << "Middle click on x: " << x << " and y: " << y << "\n";
+            break;
+        case 3:
+            cout << "Left click on x: " << x << " and y: " << y << "\n";
+            break;
+    }
+
+    return 0;
+}
+
+
+int executeTask(int chosenTask, bool isPreview) {
     // the below code will execute the given task's number
 
     std::ifstream file(DATA_FILE_PATH);
@@ -249,7 +270,12 @@ int executeTask(int chosenTask) {
             clicksInfosInt = convertVectorStringToVectorInt(clicksInfos);
 
             // we have to make the click right now
-            makeClick(clicksInfosInt.at(0), clicksInfosInt.at(1), clicksInfosInt.at(2));
+            if (isPreview) {
+                // we're just making a preview of the click here
+                makePreviewClick(clicksInfosInt.at(0), clicksInfosInt.at(1), clicksInfosInt.at(2));
+            } else {
+                makeClick(clicksInfosInt.at(0), clicksInfosInt.at(1), clicksInfosInt.at(2));
+            }
 
             // the waiting time value stored in the data file in microseconds
             usleep(clicksInfosInt.at(3));
@@ -260,6 +286,7 @@ int executeTask(int chosenTask) {
 
     return 0;
 }
+
 
 int displayMainMenu() {
     std::cout << "Welcome to the SUPINFO AutoClicker!\n\n";
@@ -284,7 +311,7 @@ int displayMainMenu() {
     switch (x) {
         case 1:
             chosenTask = displayAvailableTasks();
-            executeTask(chosenTask);
+            executeTask(chosenTask, false);
             break;
         case 2:
             cout << "2";
@@ -300,6 +327,10 @@ int displayMainMenu() {
             break;
         case 6:
             cout << "6";
+            break;
+        case 7:
+            chosenTask = displayAvailableTasks();
+            executeTask(chosenTask, true);
             break;
     }
 
