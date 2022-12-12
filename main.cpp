@@ -188,43 +188,82 @@ int displayAvailableTasks() {
     return x;
 }
 
-int makeClick(int key, int x, int y) {
-    // here we are making the click on the screen
+int makeClick(int key, int x2, int y2, bool isPreview) {
+    if (isPreview) {
+        if (GetCursorPos(&point)) {
+            int x1 = point.x;
+            int y1 = point.y;
 
-    SetCursorPos(x, y);
+            int xDiff;
+            int yDiff;
 
-    switch (key) {
-        case 1:
-            mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, x, y, 0, 0);
-            cout << "Right click on x: " << x << " and y: " << y << "\n";
-            break;
-        case 2:
-            mouse_event(MOUSEEVENTF_MIDDLEDOWN | MOUSEEVENTF_MIDDLEUP, x, y, 0, 0);
-            cout << "Middle click on x: " << x << " and y: " << y << "\n";
-            break;
-        case 3:
-            mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, x, y, 0, 0);
-            cout << "Left click on x: " << x << " and y: " << y << "\n";
-            break;
+            if (x2 < x1) {
+                xDiff = x1 - x2;
+
+                while(xDiff > 0) {
+                    SetCursorPos(x2 + xDiff, y1);
+                    xDiff--;
+                    usleep(1000);
+                }
+            } else {
+                xDiff = x2 - x1;
+
+                while(xDiff > 0) {
+                    SetCursorPos(x2 - xDiff, y1);
+                    xDiff--;
+                    usleep(1000);
+                }
+            }
+
+            if (y2 < y1) {
+                yDiff = y1 - y2;
+
+                while(yDiff > 0) {
+                    SetCursorPos(x2, y2 + yDiff);
+                    yDiff--;
+                    usleep(1000);
+                }
+            } else {
+                yDiff = y2 - y1;
+
+                while(yDiff > 0) {
+                    SetCursorPos(x2, y2 - yDiff);
+                    yDiff--;
+                    usleep(1000);
+
+                }
+            }
+        }
     }
 
-    return 0;
-}
+    SetCursorPos(x2, y2);
 
-int makePreviewClick(int key, int x, int y) {
     // here we are making the click on the screen
-
-    SetCursorPos(x, y);
 
     switch (key) {
         case 1:
-            cout << "Right click on x: " << x << " and y: " << y << "\n";
+            if (!isPreview) {
+                mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, x2, y2, 0, 0);
+                cout << "Right click on x: " << x2 << " and y: " << y2 << "\n";
+            } else {
+                cout << "[PREVIEW] Right click on x: " << x2 << " and y: " << y2 << "\n";
+            }
             break;
         case 2:
-            cout << "Middle click on x: " << x << " and y: " << y << "\n";
+            if (!isPreview) {
+                mouse_event(MOUSEEVENTF_MIDDLEDOWN | MOUSEEVENTF_MIDDLEUP, x2, y2, 0, 0);
+                cout << "Middle click on x: " << x2 << " and y: " << y2 << "\n";
+            } else {
+                cout << "[PREVIEW] Middle click on x: " << x2 << " and y: " << y2 << "\n";
+            }
             break;
         case 3:
-            cout << "Left click on x: " << x << " and y: " << y << "\n";
+            if (!isPreview) {
+                mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, x2, y2, 0, 0);
+                cout << "Left click on x: " << x2 << " and y: " << y2 << "\n";
+            } else {
+                cout << "[PREVIEW] Left click on x: " << x2 << " and y: " << y2 << "\n";
+            }
             break;
     }
 
@@ -272,9 +311,9 @@ int executeTask(int chosenTask, bool isPreview) {
             // we have to make the click right now
             if (isPreview) {
                 // we're just making a preview of the click here
-                makePreviewClick(clicksInfosInt.at(0), clicksInfosInt.at(1), clicksInfosInt.at(2));
+                makeClick(clicksInfosInt.at(0), clicksInfosInt.at(1), clicksInfosInt.at(2), true);
             } else {
-                makeClick(clicksInfosInt.at(0), clicksInfosInt.at(1), clicksInfosInt.at(2));
+                makeClick(clicksInfosInt.at(0), clicksInfosInt.at(1), clicksInfosInt.at(2), false);
             }
 
             // the waiting time value stored in the data file in microseconds
