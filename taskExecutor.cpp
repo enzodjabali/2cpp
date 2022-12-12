@@ -193,7 +193,5 @@ int executeTask(int chosenTask, bool isPreview) {
         }
     }
 
-    std::cout << "Done.\n";
-
     return 0;
 }

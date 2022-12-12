@@ -146,8 +146,30 @@ int displayAvailableTasks() {
     return x;
 }
 
+int updateData(string newData, bool isAppend) {
+    filesystem::path pwd = filesystem::current_path();
+    pwd /= "..\\data.txt";
 
-int deleteTask(int chosenTask) {
+    // Create and open a text file
+    std::ofstream MyFile;
+
+    if (isAppend) {
+        MyFile.open(pwd, std::ios_base::app);
+    } else {
+        MyFile.open(pwd);
+    }
+
+    // Write to the file
+    MyFile << newData;
+
+    // Close the file
+    MyFile.close();
+
+    return 0;
+}
+
+
+string deleteTask(int chosenTask) {
     // here we need to delete a task
 
     filesystem::path pwd = filesystem::current_path();
@@ -178,17 +200,35 @@ int deleteTask(int chosenTask) {
     }
 
     newData = newData.substr(0, newData.size()-1);
-    cout << newData << '\n';
 
     // we're updating the data file
-    // Create and open a text file
-    ofstream MyFile(pwd);
+    updateData(newData, false);
 
-    // Write to the file
-    MyFile << newData;
+    return infoTask;
+}
 
-    // Close the file
-    MyFile.close();
+int renameTask(string deletedTask) {
+    string newName;
+    std::cout << "New name: ";
+    std::cin >> newName;
+    std::cout << '\n';
+
+    std::vector<string> resultsInfoTask;
+
+    resultsInfoTask = divideStringIntoArray(deletedTask, ";");
+    resultsInfoTask.at(0) = newName;
+
+    std::string newTask;
+
+    for (int i = 0; i < resultsInfoTask.size(); i++) {
+       newTask += resultsInfoTask.at(i);
+       newTask += ";";
+    }
+
+    newTask = newTask.substr(0, newTask.size()-1);
+
+    updateData("|", true);
+    updateData(newTask, true);
 
     return 0;
 }
@@ -213,11 +253,14 @@ int displayMainMenu() {
     std::cout << '\n';
 
     int chosenTask;
+    string deletedTask;
+
 
     switch (x) {
         case 1:
             chosenTask = displayAvailableTasks();
             executeTask(chosenTask, false);
+            std::cout << "Done.\n";
             break;
         case 2:
             cout << "2";
@@ -225,9 +268,13 @@ int displayMainMenu() {
         case 3:
             chosenTask = displayAvailableTasks();
             deleteTask(chosenTask);
+            std::cout << "Done.\n";
             break;
         case 4:
-            cout << "4";
+            chosenTask = displayAvailableTasks();
+            deletedTask = deleteTask(chosenTask);
+            renameTask(deletedTask);
+            std::cout << "Done.\n";
             break;
         case 5:
             cout << "5";
@@ -238,6 +285,7 @@ int displayMainMenu() {
         case 7:
             chosenTask = displayAvailableTasks();
             executeTask(chosenTask, true);
+            std::cout << "Done.\n";
             break;
     }
 
