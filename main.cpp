@@ -230,7 +230,6 @@ int makeClick(int key, int x2, int y2, bool isPreview) {
                     SetCursorPos(x2, y2 - yDiff);
                     yDiff--;
                     usleep(1000);
-
                 }
             }
         }
@@ -326,6 +325,13 @@ int executeTask(int chosenTask, bool isPreview) {
     return 0;
 }
 
+int deleteTask(int chosenTask) {
+    // here we need to delete a task
+
+
+    return 0;
+}
+
 
 int displayMainMenu() {
     std::cout << "Welcome to the SUPINFO AutoClicker!\n\n";
@@ -356,7 +362,8 @@ int displayMainMenu() {
             cout << "2";
             break;
         case 3:
-            cout << "3";
+            chosenTask = displayAvailableTasks();
+            deleteTask(chosenTask);
             break;
         case 4:
             cout << "4";
