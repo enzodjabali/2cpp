@@ -54,7 +54,7 @@ int taskRecord(){
                 rorl.push_back(3);
             }
 
-        } else if (keyPressed(VK_LSHIFT)){
+        } else if (keyPressed(VK_RSHIFT)){
             cout <<"Vector 'xpos' : ";
             int h;
             while (h < xpos.size()) {
