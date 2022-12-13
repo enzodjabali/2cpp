@@ -3,16 +3,13 @@
 #include <vector>
 #include <algorithm>
 
-using namespace std;
-
-
-string deleteTask(int chosenTask) {
+std::string deleteTask(int chosenTask) {
     // here we need to delete a task
 
-    std::vector<string> resultsFromFileVector;
+    std::vector<std::string> resultsFromFileVector;
     resultsFromFileVector = getData();
     std::string infoTask;
-    std::vector<string> resultsInfoTask;
+    std::vector<std::string> resultsInfoTask;
 
     infoTask = resultsFromFileVector.at(chosenTask);
 
@@ -33,13 +30,13 @@ string deleteTask(int chosenTask) {
     return infoTask;
 }
 
-int renameTask(string deletedTask) {
-    string newName;
+int renameTask(std::string deletedTask) {
+    std::string newName;
     std::cout << "New name: ";
     std::cin >> newName;
     std::cout << '\n';
 
-    std::vector<string> resultsInfoTask;
+    std::vector<std::string> resultsInfoTask;
 
     resultsInfoTask = divideStringIntoArray(deletedTask, ";");
     resultsInfoTask.at(0) = newName;
@@ -62,7 +59,7 @@ int renameTask(string deletedTask) {
 int duplicateTask(int chosenTask) {
     // we're duplicating a task here
 
-    std::vector<string> resultsFromFileVector;
+    std::vector<std::string> resultsFromFileVector;
     resultsFromFileVector = getData();
 
     updateData("|", true);

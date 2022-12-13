@@ -25,10 +25,10 @@ int taskRecord(){
     std::cin >> taskName;
     std::cout << '\n';
 
-    std::vector<int> xpos;
-    std::vector<int> ypos;
-    std::vector<int> rorl;
-    std::vector<int> tim;
+    std::vector<int> xPos;
+    std::vector<int> yPos;
+    std::vector<int> clickedKey;
+    std::vector<int> breaks;
 
     long long timeStampInitial;
     long long timeStampCalculated;
@@ -38,99 +38,62 @@ int taskRecord(){
 
     while(1){
         if(keyPressed(VK_LBUTTON)){
-            printf("%s\n","Click gauche");
-
             if (GetCursorPos(&point)) {
-                cout << point.x << "," << point.y << "\n";
-                xpos.push_back(point.x);
-                ypos.push_back(point.y);
-                rorl.push_back(2);
+                cout << "Left click on x: " << point.x << " and y: " << point.y << "\n";
+
+                xPos.push_back(point.x);
+                yPos.push_back(point.y);
+                clickedKey.push_back(1);
 
                 timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
-                std::cout << timeStampCalculated << "\n";
                 timeStampInitial = generateTimeStampInMicroSeconds();
 
-                tim.push_back(timeStampCalculated);
+                breaks.push_back(timeStampCalculated);
+            }
+        } else if (keyPressed(VK_MBUTTON)){
+            if (GetCursorPos(&point)) {
+                cout << "Middle click on x: " << point.x << " and y: " << point.y << "\n";
+
+                xPos.push_back(point.x);
+                yPos.push_back(point.y);
+                clickedKey.push_back(2);
+
+                timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
+                timeStampInitial = generateTimeStampInMicroSeconds();
+
+                breaks.push_back(timeStampCalculated);
             }
         } else if (keyPressed(VK_RBUTTON)){
-            printf("%s\n","Click droit");
-
             if (GetCursorPos(&point)) {
-                cout << point.x << "," << point.y << "\n";
-                xpos.push_back(point.x);
-                ypos.push_back(point.y);
-                rorl.push_back(1);
+                cout << "Right click on x: " << point.x << " and y: " << point.y << "\n";
+
+                xPos.push_back(point.x);
+                yPos.push_back(point.y);
+                clickedKey.push_back(3);
 
                 timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
-                std::cout << timeStampCalculated << "\n";
                 timeStampInitial = generateTimeStampInMicroSeconds();
 
-                tim.push_back(timeStampCalculated);
+                breaks.push_back(timeStampCalculated);
             }
-
-        } else if (keyPressed(VK_MBUTTON)){
-            printf("%s\n","Click molette");
-
-            if (GetCursorPos(&point)) {
-                cout << point.x << "," << point.y << "\n";
-                xpos.push_back(point.x);
-                ypos.push_back(point.y);
-                rorl.push_back(3);
-
-                timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
-                std::cout << timeStampCalculated << "\n";
-                timeStampInitial = generateTimeStampInMicroSeconds();
-
-                tim.push_back(timeStampCalculated);
-            }
-
         } else if (keyPressed(VK_RSHIFT)){
-            cout <<"Vector 'xpos' : ";
-            int h;
+            string taskSchema;
 
-            while(h < xpos.size()) {
-                cout<<xpos[h]<<" ";
-                h++;
+            for(int v = 0; v < clickedKey.size(); v++){
+                string x = to_string(xPos[v]);
+                string y = to_string(yPos[v]);
+                string click = to_string(clickedKey[v]);
+                string time = to_string(breaks[v]);
+                string details = click + "," + x + "," + y + "," + time + ";";
+
+                taskSchema.append(details);
             }
 
-            cout<<endl;
-
-            cout <<"Vector 'ypos' : ";
-
-            int i;
-            while(i < ypos.size()) {
-                cout<<ypos[i]<<" ";
-                i++;
-            }
-
-            cout<<endl;
-            cout <<"Vector 'rorl' : ";
-
-            for(int x = 0; x < rorl.size() ; x++){
-                cout<<rorl[x]<<" ";
-
-            }
-
-            cout << endl;
-            cout << endl;
-            printf("%s\n","SHIFT");
-            string final;
-
-            for(int v = 0; v < rorl.size(); v++){
-                string ex = to_string(xpos[v]);
-                string why = to_string(ypos[v]);
-                string arel = to_string(rorl[v]);
-                string time = to_string(tim[v]);
-                string deets = arel + "," + ex + "," + why + "," + time + ";";
-
-                final.append(deets);
-            }
-
-            final = final.substr(0, final.size()-1);
+            taskSchema = taskSchema.substr(0, taskSchema.size()-1);
 
             updateData("|", true);
             updateData(taskName + ";", true);
-            updateData(final, true);
+            updateData(taskSchema, true);
 
             break;
         }

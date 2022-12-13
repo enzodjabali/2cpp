@@ -5,10 +5,7 @@
 #include <vector>
 #include <algorithm>
 
-using namespace std;
-
-
-vector<int> convertVectorStringToVectorInt(vector<string> strings) {
+std::vector<int> convertVectorStringToVectorInt(std::vector<std::string> strings) {
     std::vector<int> ints;
     std::transform(strings.begin(), strings.end(), std::back_inserter(ints), [&](std::string s) {
         return stoi(s);
@@ -72,25 +69,25 @@ int makeClick(int key, int x2, int y2, bool isPreview) {
         case 1:
             if (!isPreview) {
                 mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, x2, y2, 0, 0);
-                cout << "Right click on x: " << x2 << " and y: " << y2 << "\n";
+                std::cout << "Right click on x: " << x2 << " and y: " << y2 << "\n";
             } else {
-                cout << "[PREVIEW] Right click on x: " << x2 << " and y: " << y2 << "\n";
+                std::cout << "[PREVIEW] Right click on x: " << x2 << " and y: " << y2 << "\n";
             }
             break;
         case 2:
             if (!isPreview) {
                 mouse_event(MOUSEEVENTF_MIDDLEDOWN | MOUSEEVENTF_MIDDLEUP, x2, y2, 0, 0);
-                cout << "Middle click on x: " << x2 << " and y: " << y2 << "\n";
+                std::cout << "Middle click on x: " << x2 << " and y: " << y2 << "\n";
             } else {
-                cout << "[PREVIEW] Middle click on x: " << x2 << " and y: " << y2 << "\n";
+                std::cout << "[PREVIEW] Middle click on x: " << x2 << " and y: " << y2 << "\n";
             }
             break;
         case 3:
             if (!isPreview) {
                 mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, x2, y2, 0, 0);
-                cout << "Left click on x: " << x2 << " and y: " << y2 << "\n";
+                std::cout << "Left click on x: " << x2 << " and y: " << y2 << "\n";
             } else {
-                cout << "[PREVIEW] Left click on x: " << x2 << " and y: " << y2 << "\n";
+                std::cout << "[PREVIEW] Left click on x: " << x2 << " and y: " << y2 << "\n";
             }
             break;
     }
@@ -102,27 +99,22 @@ int makeClick(int key, int x2, int y2, bool isPreview) {
 int executeTask(int chosenTask, bool isPreview) {
     // the below code will execute the given task's number
 
-    std::vector<string> resultsFromFileVector;
+    std::vector<std::string> resultsFromFileVector;
     resultsFromFileVector = getData();
     std::string infoTask;
-    std::vector<string> resultsInfoTask;
+    std::vector<std::string> resultsInfoTask;
 
     infoTask = resultsFromFileVector.at(chosenTask);
     resultsInfoTask = divideStringIntoArray(infoTask, ";");
 
-    //cout << infoTask;
-    //std::cout << '\n';
     std::cout << resultsInfoTask.at(0) << " is being executed...\n";
-
-    std::vector<string> clicksInfos;
+    std::vector<std::string> clicksInfos;
     std::vector<int> clicksInfosInt;
 
     for (int i = 0; i < resultsInfoTask.size(); i++) {
         // here we get all elements from a task
         // the first one will be the name of the task [0]
         // the others will be the clicks' infos
-
-        //std::cout << resultsInfoTask.at(i) << '\n';
 
         if (i != 0) {
             clicksInfos = divideStringIntoArray(resultsInfoTask.at(i), ",");
