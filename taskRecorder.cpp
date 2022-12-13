@@ -3,12 +3,21 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <cstdint>
+#include <chrono>
 
 using namespace std;
+
+uint64_t generateTimeStampInMicroSeconds(){
+    using namespace std::chrono;
+    return duration_cast<microseconds>(system_clock::now().time_since_epoch()).count();
+}
+
 
 int keyPressed(int key){
     return (GetAsyncKeyState(key) & 0x8000 != 0);
 }
+
 
 int taskRecord(){
     string taskName;
@@ -21,6 +30,10 @@ int taskRecord(){
     std::vector<int> rorl;
     std::vector<int> tim;
 
+    long long timeStampInitial;
+    long long timeStampCalculated;
+    timeStampInitial = generateTimeStampInMicroSeconds();
+
     cout<<"We will now record your path, press right shift to end"<<endl;
 
     while(1){
@@ -32,6 +45,12 @@ int taskRecord(){
                 xpos.push_back(point.x);
                 ypos.push_back(point.y);
                 rorl.push_back(2);
+
+                timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
+                std::cout << timeStampCalculated << "\n";
+                timeStampInitial = generateTimeStampInMicroSeconds();
+
+                tim.push_back(timeStampCalculated);
             }
         } else if (keyPressed(VK_RBUTTON)){
             printf("%s\n","Click droit");
@@ -41,6 +60,12 @@ int taskRecord(){
                 xpos.push_back(point.x);
                 ypos.push_back(point.y);
                 rorl.push_back(1);
+
+                timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
+                std::cout << timeStampCalculated << "\n";
+                timeStampInitial = generateTimeStampInMicroSeconds();
+
+                tim.push_back(timeStampCalculated);
             }
 
         } else if (keyPressed(VK_MBUTTON)){
@@ -51,6 +76,12 @@ int taskRecord(){
                 xpos.push_back(point.x);
                 ypos.push_back(point.y);
                 rorl.push_back(3);
+
+                timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
+                std::cout << timeStampCalculated << "\n";
+                timeStampInitial = generateTimeStampInMicroSeconds();
+
+                tim.push_back(timeStampCalculated);
             }
 
         } else if (keyPressed(VK_RSHIFT)){
@@ -89,7 +120,8 @@ int taskRecord(){
                 string ex = to_string(xpos[v]);
                 string why = to_string(ypos[v]);
                 string arel = to_string(rorl[v]);
-                string deets = arel + "," + ex + "," + why + ",1000000;";
+                string time = to_string(tim[v]);
+                string deets = arel + "," + ex + "," + why + "," + time + ";";
 
                 final.append(deets);
             }
