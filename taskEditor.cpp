@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 string deleteTask(int chosenTask) {
     // here we need to delete a task
 

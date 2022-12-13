@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 vector<int> convertVectorStringToVectorInt(vector<string> strings) {
     std::vector<int> ints;
     std::transform(strings.begin(), strings.end(), std::back_inserter(ints), [&](std::string s) {
@@ -110,10 +109,7 @@ int executeTask(int chosenTask, bool isPreview) {
     infoTask = resultsFromFileVector.at(chosenTask);
     resultsInfoTask = divideStringIntoArray(infoTask, ";");
 
-    //cout << infoTask;
-    //std::cout << '\n';
     std::cout << resultsInfoTask.at(0) << " is being executed...\n";
-
     std::vector<string> clicksInfos;
     std::vector<int> clicksInfosInt;
 
@@ -121,8 +117,6 @@ int executeTask(int chosenTask, bool isPreview) {
         // here we get all elements from a task
         // the first one will be the name of the task [0]
         // the others will be the clicks' infos
-
-        //std::cout << resultsInfoTask.at(i) << '\n';
 
         if (i != 0) {
             clicksInfos = divideStringIntoArray(resultsInfoTask.at(i), ",");

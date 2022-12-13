@@ -13,9 +13,7 @@ POINT point;
 vector<string> divideStringIntoArray(string line, string search) {
     // parsing
 
-    //std::string line = "test1,1,152,121,2;test2,3,81,21,3;test3,1,100,100,2";
     std::string arr[100];
-    //std::string search = ";";
     int spacePos;
     int currPos = 0;
     int k = 0;
@@ -35,7 +33,6 @@ vector<string> divideStringIntoArray(string line, string search) {
     } while(spacePos >= 0);
 
     arr[k] = line.substr(prevPos,line.length());
-
     std::vector<string> myArrays;
 
     for(int i = 0; i < k+1; i++)
@@ -70,7 +67,7 @@ int updateData(string newData, bool isAppend) {
     filesystem::path pwd = filesystem::current_path();
     pwd /= "..\\data.txt";
 
-    // Create and open a text file
+    // create and open a text file
     std::ofstream MyFile;
 
     if (isAppend) {
@@ -79,10 +76,10 @@ int updateData(string newData, bool isAppend) {
         MyFile.open(pwd);
     }
 
-    // Write to the file
+    // write to the file
     MyFile << newData;
 
-    // Close the file
+    // close the file
     MyFile.close();
 
     return 0;
@@ -107,13 +104,12 @@ int displayAvailableTasks() {
         resultsInfoTask = divideStringIntoArray(infoTask, ";");
         listOfTasksNames.push_back(resultsInfoTask.at(0));
         std::cout << i+1 << ": " << listOfTasksNames.at(i) << '\n';
-
     }
 
     std::cout << '\n';
     int x;
-    std::cout << "Type a number: "; // Type a number and press enter
-    std::cin >> x; // Get user input from the keyboard
+    std::cout << "Type a number: "; // type a number and press enter
+    std::cin >> x; // get user input from the keyboard
     x = x-1;
     std::cout << '\n';
 
@@ -123,10 +119,7 @@ int displayAvailableTasks() {
 
 int displayMainMenu() {
     std::cout << "Welcome to the SUPINFO AutoClicker!\n\n";
-
-    // ask for action : execute a task / create a task / delete a task / duplicate a task / schedule a task / /!\ TASK MOVEMENT PREVIEW
     std::cout << "Available actions:\n";
-
     std::vector<string> availableActions = {"Execute a task", "Create a task", "Delete a task", "Rename a task", "Duplicate a task", "Schedule a task",  "Simulate a task's path as a preview", "Quit"};
 
     for (int i = 0; i < availableActions.size(); i++) {
@@ -135,8 +128,8 @@ int displayMainMenu() {
     std::cout << '\n';
 
     int x;
-    std::cout << "Type a number: "; // Type a number and press enter
-    std::cin >> x; // Get user input from the keyboard
+    std::cout << "Type a number: ";
+    std::cin >> x;
     std::cout << '\n';
 
     int chosenTask;
