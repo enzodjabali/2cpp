@@ -1,18 +1,12 @@
 #include <iostream>
 #include <windows.h>
-#include <conio.h>
 #include <unistd.h>
-#include <fstream>
 #include <string>
 #include <vector>
-#include <sstream>
 #include <algorithm>
-
-#include "config.cpp"
 
 using namespace std;
 
-POINT point;
 
 vector<int> convertVectorStringToVectorInt(vector<string> strings) {
     std::vector<int> ints;
@@ -23,43 +17,6 @@ vector<int> convertVectorStringToVectorInt(vector<string> strings) {
     return ints;
 }
 
-vector<string> divideStringIntoArray(string line, string search) {
-    // parsing
-
-    //std::string line = "test1,1,152,121,2;test2,3,81,21,3;test3,1,100,100,2";
-    std::string arr[100];
-    //std::string search = ";";
-    int spacePos;
-    int currPos = 0;
-    int k = 0;
-    int prevPos = 0;
-
-    do {
-        spacePos = line.find(search,currPos);
-
-        if(spacePos >= 0)
-        {
-            currPos = spacePos;
-            arr[k] = line.substr(prevPos, currPos - prevPos);
-            currPos++;
-            prevPos = currPos;
-            k++;
-        }
-    } while(spacePos >= 0);
-
-    arr[k] = line.substr(prevPos,line.length());
-
-    std::vector<string> myArrays;
-
-    for(int i = 0; i < k+1; i++)
-    {
-        //cout << arr[i] << endl;
-        myArrays.push_back(arr[i]);
-    }
-
-    return myArrays;
-
-}
 
 int makeClick(int key, int x2, int y2, bool isPreview) {
     if (isPreview) {
@@ -111,7 +68,6 @@ int makeClick(int key, int x2, int y2, bool isPreview) {
     SetCursorPos(x2, y2);
 
     // here we are making the click on the screen
-
     switch (key) {
         case 1:
             if (!isPreview) {
@@ -146,16 +102,8 @@ int makeClick(int key, int x2, int y2, bool isPreview) {
 int executeTask(int chosenTask, bool isPreview) {
     // the below code will execute the given task's number
 
-    std::ifstream file(DATA_FILE_PATH);
-    std::string str;
-    std::string result;
-
-    while (std::getline(file, str)) {
-        result = str;
-    }
-
     std::vector<string> resultsFromFileVector;
-    resultsFromFileVector = divideStringIntoArray(result, "|");
+    resultsFromFileVector = getData();
     std::string infoTask;
     std::vector<string> resultsInfoTask;
 
@@ -192,6 +140,22 @@ int executeTask(int chosenTask, bool isPreview) {
             usleep(clicksInfosInt.at(3));
         }
     }
+
+    return 0;
+}
+
+int scheduleTask(int chosenTask) {
+    // we need to ask the user for how many seconds to wait before starting the chosen task
+
+    int waitingTimeInSeconds;
+    std::cout << "How many seconds will the program wait before launching the task: ";
+    std::cin >> waitingTimeInSeconds;
+    std::cout << '\n';
+    std::cout << "The program will wait " << waitingTimeInSeconds << "s before executing the task.\n";
+
+    int waitingTimeInMicroSeconds = waitingTimeInSeconds * 1000000;
+    usleep(waitingTimeInMicroSeconds);
+    executeTask(chosenTask, false);
 
     return 0;
 }
