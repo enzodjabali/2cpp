@@ -38,54 +38,46 @@ int taskRecord(){
 
     while(1){
         if(keyPressed(VK_LBUTTON)){
-            printf("%s\n","Click gauche");
-
             if (GetCursorPos(&point)) {
-                cout << point.x << "," << point.y << "\n";
-                xPos.push_back(point.x);
-                yPos.push_back(point.y);
-                clickedKey.push_back(2);
+                cout << "Left click on x: " << point.x << " and y: " << point.y << "\n";
 
-                timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
-                std::cout << timeStampCalculated << "\n";
-                timeStampInitial = generateTimeStampInMicroSeconds();
-
-                breaks.push_back(timeStampCalculated);
-            }
-        } else if (keyPressed(VK_RBUTTON)){
-            printf("%s\n","Click droit");
-
-            if (GetCursorPos(&point)) {
-                cout << point.x << "," << point.y << "\n";
                 xPos.push_back(point.x);
                 yPos.push_back(point.y);
                 clickedKey.push_back(1);
 
                 timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
-                std::cout << timeStampCalculated << "\n";
                 timeStampInitial = generateTimeStampInMicroSeconds();
 
                 breaks.push_back(timeStampCalculated);
             }
-
         } else if (keyPressed(VK_MBUTTON)){
-            printf("%s\n","Click molette");
-
             if (GetCursorPos(&point)) {
-                cout << point.x << "," << point.y << "\n";
+                cout << "Middle click on x: " << point.x << " and y: " << point.y << "\n";
+
+                xPos.push_back(point.x);
+                yPos.push_back(point.y);
+                clickedKey.push_back(2);
+
+                timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
+                timeStampInitial = generateTimeStampInMicroSeconds();
+
+                breaks.push_back(timeStampCalculated);
+            }
+        } else if (keyPressed(VK_RBUTTON)){
+            if (GetCursorPos(&point)) {
+                cout << "Right click on x: " << point.x << " and y: " << point.y << "\n";
+
                 xPos.push_back(point.x);
                 yPos.push_back(point.y);
                 clickedKey.push_back(3);
 
                 timeStampCalculated = generateTimeStampInMicroSeconds() - timeStampInitial;
-                std::cout << timeStampCalculated << "\n";
                 timeStampInitial = generateTimeStampInMicroSeconds();
 
                 breaks.push_back(timeStampCalculated);
             }
-
         } else if (keyPressed(VK_RSHIFT)){
-            string final;
+            string taskSchema;
 
             for(int v = 0; v < clickedKey.size(); v++){
                 string x = to_string(xPos[v]);
@@ -94,14 +86,14 @@ int taskRecord(){
                 string time = to_string(breaks[v]);
                 string details = click + "," + x + "," + y + "," + time + ";";
 
-                final.append(details);
+                taskSchema.append(details);
             }
 
-            final = final.substr(0, final.size()-1);
+            taskSchema = taskSchema.substr(0, taskSchema.size()-1);
 
             updateData("|", true);
             updateData(taskName + ";", true);
-            updateData(final, true);
+            updateData(taskSchema, true);
 
             break;
         }
