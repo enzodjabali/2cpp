@@ -1,11 +1,7 @@
 #include <iostream>
 #include <windows.h>
-#include <conio.h>
-#include <unistd.h>
-#include <fstream>
 #include <string>
 #include <vector>
-#include <sstream>
 #include <algorithm>
 
 using namespace std;
@@ -15,14 +11,17 @@ int keyPressed(int key){
 }
 
 int taskRecord(){
+    string taskName;
+    std::cout << "Type a name: ";
+    std::cin >> taskName;
+    std::cout << '\n';
+
     std::vector<int> xpos;
     std::vector<int> ypos;
     std::vector<int> rorl;
     std::vector<int> tim;
 
-    int a;
-
-    cout<<"We will now record your path, press shift to end"<<endl;
+    cout<<"We will now record your path, press right shift to end"<<endl;
 
     while(1){
         if(keyPressed(VK_LBUTTON)){
@@ -57,46 +56,52 @@ int taskRecord(){
         } else if (keyPressed(VK_RSHIFT)){
             cout <<"Vector 'xpos' : ";
             int h;
-            while (h < xpos.size()) {
+
+            while(h < xpos.size()) {
                 cout<<xpos[h]<<" ";
-                h++; }
+                h++;
+            }
+
             cout<<endl;
 
             cout <<"Vector 'ypos' : ";
-            int i;
-            while (i < ypos.size()) {
-                cout<<ypos[i]<<" ";
-                i++; }
-            cout<<endl;
 
+            int i;
+            while(i < ypos.size()) {
+                cout<<ypos[i]<<" ";
+                i++;
+            }
+
+            cout<<endl;
             cout <<"Vector 'rorl' : ";
+
             for(int x = 0; x < rorl.size() ; x++){
                 cout<<rorl[x]<<" ";
 
             }
 
-            cout<<endl;
-            cout<<endl;
+            cout << endl;
+            cout << endl;
             printf("%s\n","SHIFT");
             string final;
-            for(int v = 0; v < rorl.size(); v++){
 
+            for(int v = 0; v < rorl.size(); v++){
                 string ex = to_string(xpos[v]);
                 string why = to_string(ypos[v]);
                 string arel = to_string(rorl[v]);
+                string deets = arel + "," + ex + "," + why + ",1000000;";
 
-                string deets = arel+","+ex+","+why+",1000000;";
                 final.append(deets);
             }
 
-            //ofstream Paths("C:\\Users\\thoma\\Desktop\\supinfo stuff\\2cpp\\tester.txt");
-            final.append("|");
-            cout<<final;
-            //Paths<<final;
-            //Paths.close();
+            final = final.substr(0, final.size()-1);
+
+            updateData("|", true);
+            updateData(taskName + ";", true);
+            updateData(final, true);
+
             break;
         }
-
     }
 
     return 1;

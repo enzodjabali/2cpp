@@ -1,12 +1,9 @@
 #include <iostream>
 #include <windows.h>
-#include <conio.h>
 #include <unistd.h>
 #include <fstream>
 #include <string>
 #include <vector>
-#include <sstream>
-#include <algorithm>
 #include <filesystem>
 
 using namespace std;
@@ -97,99 +94,6 @@ int updateData(string newData, bool isAppend) {
 #include "taskRecorder.cpp"
 
 
-
-/*
-int recordSchema() {
-
-    //SetCursorPos(100, 400);
-    //mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);}
-
-    while(1){
-        if(keyPressed(VK_LBUTTON)){
-            printf("%s\n","Click gauche");
-
-            if (GetCursorPos(&point)) {
-                cout << point.x << "," << point.y << "\n";
-            }
-        } else if (keyPressed(VK_RBUTTON)){
-            printf("%s\n","Click droit");
-
-            if (GetCursorPos(&point)) {
-                cout << point.x << "," << point.y << "\n";
-            }
-        } else if (keyPressed(VK_LSHIFT)){
-            printf("%s\n","SHIFT");
-            break;
-        }
-    }
-
-    return 1;
-}
-
-
-
-
-int ReadFile() {
-    // Create and open a text file
-    ofstream MyFile("C:/Users/$4UR000-S8CC9UP2KJ2T/CLionProjects/2cpp/data.txt");
-
-    // Write to the file
-    //std::string myText = "test1,1,152,121,2;test2,3,81,21,3;test3,1,152,121,2";
-    std::string myText = "test1;1,152,121,2;3,81,21,3|test2;1,152,121,2;3,81,21,3;1,152,121,2|test3;1,152,121,2;3,81,21,3;1,152,121,2;3,81,21,3";
-
-    MyFile << myText;
-
-    // Close the file
-    MyFile.close();
-
-    std::ifstream file("C:/Users/$4UR000-S8CC9UP2KJ2T/CLionProjects/2cpp/data.txt");
-    std::string str;
-
-    std::string result;
-
-    while (std::getline(file, str))
-    {
-        // Process str
-        result = str;
-    }
-
-    //cout << result;
-
-    std::vector<string> resultsFromFileVector;
-    resultsFromFileVector = divideStringIntoArray(result, "|");
-
-    std::string infoTask;
-
-    std::vector<string> resultsInfoTask;
-
-    std::vector<string> listOfTasksNames;
-
-    for (int i = 0; i < resultsFromFileVector.size(); i++) {
-
-        // here we have each task (we're printing it out below)
-        std::cout << resultsFromFileVector.at(i) << '\n';
-        infoTask = resultsFromFileVector.at(i);
-
-        // now we want to split each data from the current task
-        resultsInfoTask = divideStringIntoArray(infoTask, ";");
-
-        for (int i = 0; i < resultsInfoTask.size(); i++) {
-            std::cout << resultsInfoTask.at(i) << '\n';
-
-        }
-
-        listOfTasksNames.push_back(resultsInfoTask.at(0));
-
-        for (int i = 0; i < listOfTasksNames.size(); i++) {
-            std::cout << listOfTasksNames.at(i) << '\n';
-        }
-
-    }
-
-    return 0;
-}
- */
-
 int displayAvailableTasks() {
     // display tasks
     std::vector<string> resultsFromFileVector;
@@ -246,8 +150,8 @@ int displayMainMenu() {
             break;
         case 2:
             taskRecord();
-            std::cout << "Done.\n";
-            break;
+            std::cout << "Task saved.\n";
+            std::exit(0);
         case 3:
             chosenTask = displayAvailableTasks();
             deleteTask(chosenTask);
@@ -284,17 +188,10 @@ int displayMainMenu() {
 
 
 int main(){
-    //std::vector<int> clicksInfosInt;
-    //clicksInfosInt = convertVectorStringToVectorInt({"1111", "21", "3", "411123"});
-
     while(true) {
         displayMainMenu();
         std::cout << "\n";
     }
-
-    //ReadFile();
-
-    //recordSchema();
 
     return 0;
 }
