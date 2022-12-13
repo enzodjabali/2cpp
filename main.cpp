@@ -43,10 +43,10 @@ std::vector<std::string> divideStringIntoArray(std::string line, std::string sea
 
 
 std::vector<std::string> getData() {
-    std::filesystem::path pwd = std::filesystem::current_path();
-    pwd /= "..\\data.txt";
+    std::filesystem::path path = std::filesystem::current_path();
+    path /= "..\\data.txt";
 
-    std::ifstream file(pwd);
+    std::ifstream file(path);
     std::string str;
     std::string result;
 
@@ -62,23 +62,23 @@ std::vector<std::string> getData() {
 
 
 int updateData(std::string newData, bool isAppend) {
-    std::filesystem::path pwd = std::filesystem::current_path();
-    pwd /= "..\\data.txt";
+    std::filesystem::path path = std::filesystem::current_path();
+    path /= "..\\data.txt";
 
     // create and open a text file
-    std::ofstream MyFile;
+    std::ofstream dataFile;
 
     if (isAppend) {
-        MyFile.open(pwd, std::ios_base::app);
+        dataFile.open(path, std::ios_base::app);
     } else {
-        MyFile.open(pwd);
+        dataFile.open(path);
     }
 
     // write to the file
-    MyFile << newData;
+    dataFile << newData;
 
     // close the file
-    MyFile.close();
+    dataFile.close();
 
     return 0;
 }
