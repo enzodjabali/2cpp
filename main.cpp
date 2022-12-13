@@ -136,7 +136,15 @@ int displayMainMenu() {
     switch (x) {
         case 1:
             chosenTask = displayAvailableTasks();
-            executeTask(chosenTask, false);
+
+            int nbCycles;
+            std::cout << "Number of cycles: \n";
+            std::cin >> nbCycles;
+
+            for (int i = 0; i < nbCycles; i++) {
+                executeTask(chosenTask, false);
+            }
+
             std::cout << "Done.\n";
             break;
         case 2:
