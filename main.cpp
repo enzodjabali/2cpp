@@ -138,8 +138,9 @@ int displayMainMenu() {
             chosenTask = displayAvailableTasks();
 
             int nbCycles;
-            std::cout << "Number of cycles: \n";
+            std::cout << "Number of cycles: ";
             std::cin >> nbCycles;
+            std::cout << "\n";
 
             for (int i = 0; i < nbCycles; i++) {
                 executeTask(chosenTask, false);
