@@ -118,7 +118,7 @@ int displayAvailableTasks() {
 int displayMainMenu() {
     std::cout << "Welcome to the SUPINFO AutoClicker!\n\n";
     std::cout << "Available actions:\n";
-    std::vector<string> availableActions = {"Execute a task", "Create a task", "Delete a task", "Rename a task", "Duplicate a task", "Schedule a task",  "Simulate a task's path as a preview", "Quit"};
+    std::vector<string> availableActions = {"Execute a task", "Create a task", "Delete a task", "Rename a task", "Duplicate a task", "Schedule a task", "Simulate a task's path as a preview", "Show history", "Quit"};
 
     for (int i = 0; i < availableActions.size(); i++) {
         std::cout << i+1 << ": " << availableActions.at(i) << '\n';
@@ -170,6 +170,9 @@ int displayMainMenu() {
             std::cout << "Done.\n";
             break;
         case 8:
+            showHistory();
+            break;
+        case 9:
             std::cout << "Bye.\n";
             std::exit(0);
     }

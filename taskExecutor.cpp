@@ -4,6 +4,18 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <chrono>
+#include <ctime>
+#include <filesystem>
+
+std::string getCurrentDate() {
+    auto end = std::chrono::system_clock::now();
+
+    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+    std::string date = std::ctime(&end_time);
+
+    return date;
+}
 
 std::vector<int> convertVectorStringToVectorInt(std::vector<std::string> strings) {
     std::vector<int> ints;
@@ -95,8 +107,47 @@ int makeClick(int key, int x2, int y2, bool isPreview) {
     return 0;
 }
 
+int writeHistory(std::string taskName, std::string date, long executionTime) {
+    executionTime = executionTime / 1000000;
+    std::string newTaskHistory = "Task: " + taskName + "\nDate: " + date + "Execution time: " + std::to_string(executionTime) + "s\n";
+
+    std::filesystem::path path = std::filesystem::current_path();
+    path /= "..\\history.txt";
+
+    std::ofstream historyFile;
+    historyFile.open(path, std::ios_base::app);
+    historyFile << newTaskHistory;
+    historyFile.close();
+
+    return 0;
+}
+
+int showHistory() {
+    std::filesystem::path path = std::filesystem::current_path();
+    path /= "..\\history.txt";
+
+    std::ifstream file(path);
+    std::string str;
+
+    int lineCounter = 0;
+
+    while (std::getline(file, str)) {
+        std::cout << str << "\n";
+        lineCounter++;
+
+        if (lineCounter % 3 == 0) {
+            std::cout << "------------------------------\n";
+        }
+    }
+
+    return 0;
+}
 
 int executeTask(int chosenTask, bool isPreview) {
+    // getting the date of the execution of the task
+    std::string date;
+    date = getCurrentDate();
+
     // the below code will execute the given task's number
 
     std::vector<std::string> resultsFromFileVector;
@@ -110,6 +161,7 @@ int executeTask(int chosenTask, bool isPreview) {
     std::cout << resultsInfoTask.at(0) << " is being executed...\n";
     std::vector<std::string> clicksInfos;
     std::vector<int> clicksInfosInt;
+    long executionTime = 0;
 
     for (int i = 0; i < resultsInfoTask.size(); i++) {
         // here we get all elements from a task
@@ -119,6 +171,8 @@ int executeTask(int chosenTask, bool isPreview) {
         if (i != 0) {
             clicksInfos = divideStringIntoArray(resultsInfoTask.at(i), ",");
             clicksInfosInt = convertVectorStringToVectorInt(clicksInfos);
+
+            executionTime += clicksInfosInt.at(3);
 
             // we have to make the click right now
             if (isPreview) {
@@ -132,6 +186,9 @@ int executeTask(int chosenTask, bool isPreview) {
             usleep(clicksInfosInt.at(3));
         }
     }
+
+    // we need add the task to the history here
+    writeHistory(resultsInfoTask.at(0), date, executionTime);
 
     return 0;
 }
