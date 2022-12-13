@@ -6,11 +6,9 @@
 #include <vector>
 #include <filesystem>
 
-using namespace std;
-
 POINT point;
 
-vector<string> divideStringIntoArray(string line, string search) {
+std::vector<std::string> divideStringIntoArray(std::string line, std::string search) {
     // parsing
 
     std::string arr[100];
@@ -33,7 +31,7 @@ vector<string> divideStringIntoArray(string line, string search) {
     } while(spacePos >= 0);
 
     arr[k] = line.substr(prevPos,line.length());
-    std::vector<string> myArrays;
+    std::vector<std::string> myArrays;
 
     for(int i = 0; i < k+1; i++)
     {
@@ -44,8 +42,8 @@ vector<string> divideStringIntoArray(string line, string search) {
 }
 
 
-vector<string> getData() {
-    filesystem::path pwd = filesystem::current_path();
+std::vector<std::string> getData() {
+    std::filesystem::path pwd = std::filesystem::current_path();
     pwd /= "..\\data.txt";
 
     std::ifstream file(pwd);
@@ -56,15 +54,15 @@ vector<string> getData() {
         result = str;
     }
 
-    std::vector<string> data;
+    std::vector<std::string> data;
     data = divideStringIntoArray(result, "|");
 
     return data;
 }
 
 
-int updateData(string newData, bool isAppend) {
-    filesystem::path pwd = filesystem::current_path();
+int updateData(std::string newData, bool isAppend) {
+    std::filesystem::path pwd = std::filesystem::current_path();
     pwd /= "..\\data.txt";
 
     // create and open a text file
