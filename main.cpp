@@ -9,15 +9,95 @@
 #include <algorithm>
 #include <filesystem>
 
-#include "taskExecutor.cpp"
-
-
 using namespace std;
+
+
+vector<string> divideStringIntoArray(string line, string search) {
+    // parsing
+
+    //std::string line = "test1,1,152,121,2;test2,3,81,21,3;test3,1,100,100,2";
+    std::string arr[100];
+    //std::string search = ";";
+    int spacePos;
+    int currPos = 0;
+    int k = 0;
+    int prevPos = 0;
+
+    do {
+        spacePos = line.find(search,currPos);
+
+        if(spacePos >= 0)
+        {
+            currPos = spacePos;
+            arr[k] = line.substr(prevPos, currPos - prevPos);
+            currPos++;
+            prevPos = currPos;
+            k++;
+        }
+    } while(spacePos >= 0);
+
+    arr[k] = line.substr(prevPos,line.length());
+
+    std::vector<string> myArrays;
+
+    for(int i = 0; i < k+1; i++)
+    {
+        myArrays.push_back(arr[i]);
+    }
+
+    return myArrays;
+}
+
+
+vector<string> getData() {
+    filesystem::path pwd = filesystem::current_path();
+    pwd /= "..\\data.txt";
+
+    std::ifstream file(pwd);
+    std::string str;
+    std::string result;
+
+    while (std::getline(file, str)) {
+        result = str;
+    }
+
+    std::vector<string> data;
+    data = divideStringIntoArray(result, "|");
+
+    return data;
+}
+
+
+int updateData(string newData, bool isAppend) {
+    filesystem::path pwd = filesystem::current_path();
+    pwd /= "..\\data.txt";
+
+    // Create and open a text file
+    std::ofstream MyFile;
+
+    if (isAppend) {
+        MyFile.open(pwd, std::ios_base::app);
+    } else {
+        MyFile.open(pwd);
+    }
+
+    // Write to the file
+    MyFile << newData;
+
+    // Close the file
+    MyFile.close();
+
+    return 0;
+}
+
+
+#include "taskExecutor.cpp"
+#include "taskEditor.cpp"
+#include "taskRecorder.cpp"
 
 int keyPressed(int key){
     return (GetAsyncKeyState(key) & 0x8000 != 0);
 }
-
 
 
 int recordSchema() {
@@ -112,18 +192,8 @@ int ReadFile() {
 
 int displayAvailableTasks() {
     // display tasks
-    std::cout << "Available tasks:\n";
-
-    std::ifstream file(DATA_FILE_PATH);
-    std::string str;
-    std::string result;
-
-    while (std::getline(file, str)) {
-        result = str;
-    }
-
     std::vector<string> resultsFromFileVector;
-    resultsFromFileVector = divideStringIntoArray(result, "|");
+    resultsFromFileVector = getData();
     std::string infoTask;
     std::vector<string> resultsInfoTask;
     std::vector<string> listOfTasksNames;
@@ -146,133 +216,6 @@ int displayAvailableTasks() {
     return x;
 }
 
-int updateData(string newData, bool isAppend) {
-    filesystem::path pwd = filesystem::current_path();
-    pwd /= "..\\data.txt";
-
-    // Create and open a text file
-    std::ofstream MyFile;
-
-    if (isAppend) {
-        MyFile.open(pwd, std::ios_base::app);
-    } else {
-        MyFile.open(pwd);
-    }
-
-    // Write to the file
-    MyFile << newData;
-
-    // Close the file
-    MyFile.close();
-
-    return 0;
-}
-
-
-string deleteTask(int chosenTask) {
-    // here we need to delete a task
-
-    filesystem::path pwd = filesystem::current_path();
-    pwd /= "..\\data.txt";
-
-    std::ifstream file(pwd);
-    std::string str;
-    std::string result;
-
-    while (std::getline(file, str)) {
-        result = str;
-    }
-
-    std::vector<string> resultsFromFileVector;
-    resultsFromFileVector = divideStringIntoArray(result, "|");
-    std::string infoTask;
-    std::vector<string> resultsInfoTask;
-
-    infoTask = resultsFromFileVector.at(chosenTask);
-
-    std::string newData;
-
-    for (int i = 0; i < resultsFromFileVector.size(); i++) {
-        if (i != chosenTask) {
-            newData += resultsFromFileVector.at(i);
-            newData += "|";
-        }
-    }
-
-    newData = newData.substr(0, newData.size()-1);
-
-    // we're updating the data file
-    updateData(newData, false);
-
-    return infoTask;
-}
-
-int renameTask(string deletedTask) {
-    string newName;
-    std::cout << "New name: ";
-    std::cin >> newName;
-    std::cout << '\n';
-
-    std::vector<string> resultsInfoTask;
-
-    resultsInfoTask = divideStringIntoArray(deletedTask, ";");
-    resultsInfoTask.at(0) = newName;
-
-    std::string newTask;
-
-    for (int i = 0; i < resultsInfoTask.size(); i++) {
-       newTask += resultsInfoTask.at(i);
-       newTask += ";";
-    }
-
-    newTask = newTask.substr(0, newTask.size()-1);
-
-    updateData("|", true);
-    updateData(newTask, true);
-
-    return 0;
-}
-
-int duplicateTask(int chosenTask) {
-    // we're duplicating a task here
-
-    filesystem::path pwd = filesystem::current_path();
-    pwd /= "..\\data.txt";
-
-    std::ifstream file(pwd);
-    std::string str;
-    std::string result;
-
-    while (std::getline(file, str)) {
-        result = str;
-    }
-
-    std::vector<string> resultsFromFileVector;
-    resultsFromFileVector = divideStringIntoArray(result, "|");
-
-    updateData("|", true);
-    updateData(resultsFromFileVector.at(chosenTask), true);
-
-    return 0;
-}
-
-
-int scheduleTask(int chosenTask) {
-    // we need to ask the user for how many seconds to wait before starting the chosen task
-
-    int waitingTimeInSeconds;
-    std::cout << "How many seconds will the program wait before launching the task: ";
-    std::cin >> waitingTimeInSeconds;
-    std::cout << '\n';
-    std::cout << "The program will wait " << waitingTimeInSeconds << "s before executing the task.\n";
-
-    int waitingTimeInMicroSeconds = waitingTimeInSeconds * 1000000;
-    usleep(waitingTimeInMicroSeconds);
-    executeTask(chosenTask, false);
-
-    return 0;
-}
-
 
 int displayMainMenu() {
     std::cout << "Welcome to the SUPINFO AutoClicker!\n\n";
@@ -280,7 +223,7 @@ int displayMainMenu() {
     // ask for action : execute a task / create a task / delete a task / duplicate a task / schedule a task / /!\ TASK MOVEMENT PREVIEW
     std::cout << "Available actions:\n";
 
-    std::vector<string> availableActions = {"Execute a task", "Create a task", "Delete a task", "Rename a task", "Duplicate a task", "Schedule a task",  "Simulate a task's path as a preview"};
+    std::vector<string> availableActions = {"Execute a task", "Create a task", "Delete a task", "Rename a task", "Duplicate a task", "Schedule a task",  "Simulate a task's path as a preview", "Quit"};
 
     for (int i = 0; i < availableActions.size(); i++) {
         std::cout << i+1 << ": " << availableActions.at(i) << '\n';
@@ -331,6 +274,9 @@ int displayMainMenu() {
             executeTask(chosenTask, true);
             std::cout << "Done.\n";
             break;
+        case 8:
+            std::cout << "Bye.\n";
+            std::exit(0);
     }
 
     return 0;
@@ -341,7 +287,10 @@ int main(){
     //std::vector<int> clicksInfosInt;
     //clicksInfosInt = convertVectorStringToVectorInt({"1111", "21", "3", "411123"});
 
-    displayMainMenu();
+    while(true) {
+        displayMainMenu();
+        std::cout << "\n";
+    }
 
     //ReadFile();
 
