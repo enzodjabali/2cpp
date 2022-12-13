@@ -11,6 +11,7 @@
 
 using namespace std;
 
+POINT point;
 
 vector<string> divideStringIntoArray(string line, string search) {
     // parsing
@@ -95,11 +96,9 @@ int updateData(string newData, bool isAppend) {
 #include "taskEditor.cpp"
 #include "taskRecorder.cpp"
 
-int keyPressed(int key){
-    return (GetAsyncKeyState(key) & 0x8000 != 0);
-}
 
 
+/*
 int recordSchema() {
 
     //SetCursorPos(100, 400);
@@ -189,6 +188,7 @@ int ReadFile() {
 
     return 0;
 }
+ */
 
 int displayAvailableTasks() {
     // display tasks
@@ -238,7 +238,6 @@ int displayMainMenu() {
     int chosenTask;
     string deletedTask;
 
-
     switch (x) {
         case 1:
             chosenTask = displayAvailableTasks();
@@ -246,7 +245,8 @@ int displayMainMenu() {
             std::cout << "Done.\n";
             break;
         case 2:
-            cout << "2";
+            taskRecord();
+            std::cout << "Done.\n";
             break;
         case 3:
             chosenTask = displayAvailableTasks();

@@ -10,8 +10,6 @@
 
 using namespace std;
 
-POINT point;
-
 
 vector<int> convertVectorStringToVectorInt(vector<string> strings) {
     std::vector<int> ints;
